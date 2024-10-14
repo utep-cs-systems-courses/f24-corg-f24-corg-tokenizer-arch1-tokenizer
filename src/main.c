@@ -4,9 +4,9 @@
 
 #include <stdlib.h>
 
-#include "tokenizer.c"
+#include "tokenizer.h"
 
-#include "history.c"
+#include "history.h"
 
 
 
@@ -16,71 +16,55 @@
 
 int main(void) {
 
-  // Simple UI for the tokenizer
+  // Simple UI
 
   char userInput[MAX];
 
-  List* history = init_history();  // Initialize history list
+  HistoryList* history = init_history();  // Initialize history list correctly
 
   char** tokens;
 
 
 
-  printf("Welcome to my Tokenizer! \nEnter a phrase after '$'.\n");
-
-  printf("Enter 'e' to exit or '!' to see your phrases so far.\n");
+  printf("Welcome to my Tokenizer!\nEnter a phrase after '$'.\nEnter 'e' to exit or '!' to see your phrases so far\n");
 
 
 
-  // Loop until the user enters 'e' for exit
-
-  while (1) {
+  while (*userInput != 'e') {
 
     printf("$ ");
 
-    fgets(userInput, MAX, stdin);  // Get user input
+    fgets(userInput, MAX, stdin);
 
-    userInput[strcspn(userInput, "\n")] = '\0';  // Remove newline character
-
-
-
-    // Check if the user wants to exit
-
-    if (strcmp(userInput, "e") == 0) {
-
-      break;
-
-    }
+    printf("\n");
 
 
 
-    // Show history if the user enters '!'
+    if (*userInput != 'e' && *userInput != '!') {
 
-    if (strcmp(userInput, "!") == 0) {
+      printf("The string you entered: %s", userInput);  // Test Echo
 
-      printf("Your phrases so far:\n");
+      tokens = tokenize(userInput);
 
-      print_history(history);
+      printf("The string you entered Tokenized is:\n");
 
-    }
+      print_tokens(tokens);
 
 
-    // Otherwise, tokenize and store the input
-    else {
-      printf("The string you entered: %s\n", userInput);  // Echo the input
-
-      tokens = tokenize(userInput);  // Tokenize the input string
-      printf("The string you entered tokenized is:\n");
-      print_tokens(tokens);  // Print the tokens
 
       add_history(history, userInput);  // Add the input to history
-      free_tokens(tokens);  // Free the tokens after use
+
+    }
+
+
+    if (*userInput == '!') {
+      printf("Your Phrases so far:\n");
+      print_history(history);  // Print history
     }
   }
 
-  // Free the history list
-  free_history(history);
-
-  printf("Thank you for using my Tokenizer!\n");
+  free_tokens(tokens);
+  free_history(history);  // Free history
+  printf("Thank you for using my Tokenizer! GOODBYE!\n");
   return 0;
 }
