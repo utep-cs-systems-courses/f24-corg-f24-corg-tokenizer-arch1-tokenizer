@@ -1,68 +1,69 @@
-#ifndef _HISTORY_
-#define _HISTORY_
+#ifndef HISTORY_H
 
-typedef struct s_Item {
-  int id;
-  char *str;
-  struct s_Item *next;
-} Item;
-
-typedef struct s_List {
-  struct s_Item *root;
-} List;
-
-/* Initialize the linked list to keep the history. */
-List* init_history();
-{
-  List* linked_list - (List * ) malloc(sizeof(List));
-  if (linked_list == NULL) {
-    printf("Error - Memory Limit Reached");
-  }
-
-  linked_list->root = NULL;
-  return linked_list;
-}
+#define HISTORY_H
 
 
-/* Add a history item to the end of the list.
-   List* list - the linked list
-   char* str - the string to store
-*/
-void add_history(List *list, char *str)
-{
-  Item* node = (Imte *) malloc(sizeof(Item));
-  if (node == NULL)
-    {
-      printf("Error - Memory Limit Reached") 
-    }
-  id_number += 1;
-  node->id = id_number;
-  node->str = str;
-  node->next = list->root;
-  list->root = node;
-}
 
-/* Retrieve the string stored in the node where Item->id == id.
-   List* list - the linked list
-   int id - the id of the Item to find */
-char *get_history(List *list, int id)
-{
-  Item* current = list->root;
+// Structure for an individual history item in the linked list
 
-  while (current != NULL)
-    {
-      if(current->id == id)
-	{
-	  
-	}
-    }
-}
+typedef struct HistoryItem {
+
+  int id;                // Unique ID of the history item
+
+  char *str;             // String associated with the history item
+
+  struct HistoryItem *next; // Pointer to the next item in the list
+
+} HistoryItem;
 
 
-/*Print the entire contents of the list. */
-void print_history(List *list);
 
-/*Free the history list and the strings it references. */
-void free_history(List *list);
+// Structure representing the entire history list
 
-#endif
+typedef struct HistoryList {
+
+  HistoryItem *head;     // Pointer to the first item in the history list
+
+} HistoryList;
+
+
+
+/* Initialize a new empty history list.
+
+   Returns a pointer to the newly created history list. */
+
+HistoryList* init_history();
+
+
+
+/* Add a new history item to the end of the list.
+
+   Parameters:
+
+   - list: Pointer to the history list where the item will be added
+
+   - str: The string to be stored in the new history item */
+
+void add_history(HistoryList *list, char *str);
+
+
+void add_history(HistoryList *list, char *str);
+
+/* Retrieve the string stored in the history item with a matching ID.
+   Parameters:
+   - list: Pointer to the history list
+   - id: The ID of the history item to be retrieved
+   Returns a pointer to the string if found, or NULL if the ID does not exist. */
+char *get_history(HistoryList *list, int id);
+
+/* Print all the history items in the list.
+   Parameters:
+   - list: Pointer to the history list */
+void print_history(HistoryList *list);
+
+/* Free all memory allocated for the history list and its items.
+   Parameters:
+   - list: Pointer to the history list to be freed */
+void free_history(HistoryList *list);
+
+#endif // HISTORY_H
